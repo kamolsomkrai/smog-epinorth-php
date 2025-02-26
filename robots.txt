@@ -1,0 +1,10 @@
+User-agent: Mediapartners-Google
+Disallow: 
+
+User-agent: Googlebot
+Allow: /
+   
+Disallow: /search
+User-agent: *
+
+Sitemap: https://smog-epinorth.ddc.moph.go.th/vendor/composer/ruay/ddc.xml
