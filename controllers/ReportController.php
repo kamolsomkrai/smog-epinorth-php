@@ -31,23 +31,32 @@ class ReportController extends \yii\web\Controller
 
     public function actionReport1($year = null, $groupcode = null, $month = null, $provcode = null)
     {
+        // ตั้งค่าเริ่มต้นสำหรับปีปัจจุบัน (พ.ศ.)
         $year = $year == null ? date("Y") + 543 : $year;
-        $model = $month != null ? Report1Day::find()
-            : Report1Week::find();
 
+        // ตั้งค่าเริ่มต้นสำหรับ provcode เป็น 50
+        $provcode = $provcode == null ? '50' : $provcode;
+
+        // เลือกโมเดลตามการเลือกเดือน
+        $model = $month != null ? Report1Day::find() : Report1Week::find();
+
+        // เพิ่มเงื่อนไขการกรอง
         $model->andFilterWhere(['yyyy' => $year]);
         $model->andFilterWhere(['groupcode' => $groupcode]);
         $model->andFilterWhere(['mmmm' => $month]);
         $model->andFilterWhere(['provcode' => $provcode]);
 
+        // เรียงลำดับข้อมูล
         $model->orderBy(['provcode' => SORT_ASC, 'hoscode' => SORT_ASC, 'groupcode' => SORT_ASC]);
 
+        // สร้าง DataProvider
         $dataProvider = new ActiveDataProvider([
             'query' => $model,
             'sort' => false,
             'pagination' => false,
         ]);
 
+        // Render view และส่งข้อมูลไปยัง view
         return $this->render('report1', [
             'dataProvider' => $dataProvider,
         ]);
